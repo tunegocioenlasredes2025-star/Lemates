@@ -12,9 +12,9 @@ window.LEMATES_CONFIG = {
   pago: {
     // Mercado Pago: alias/CVU de tu cuenta + imagen del QR "Cobrar con QR"
     mercadopago: {
-      titular: "REEMPLAZAR — Titular de la cuenta",
-      alias: "REEMPLAZAR.mp.alias",          // ej: lemates.mp
-      cvu: "0000000000000000000000",         // REEMPLAZAR — CVU de Mercado Pago (22 díg.)
+      titular: "Mateo Benjamín de Rosa",
+      alias: "mateoderosamp",
+      cvu: "0000003100030584939333",         // CVU de Mercado Pago (22 díg.)
       // Subí tu QR de Mercado Pago acá (PNG/JPG). Si no existe, se muestra un aviso.
       qr: "assets/img/pago/qr-mercadopago.png",
       // Link de pago opcional (Mercado Pago "Link de pago" / preferencia). Dejar "" si no usás.
