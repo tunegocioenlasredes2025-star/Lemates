@@ -4,7 +4,8 @@
 (function () {
   "use strict";
 
-  const WA_NUMBER = "5491154693079"; // +54 9 11 5469-3079
+  const WA_NUMBER =
+    (window.LEMATES_CONFIG && window.LEMATES_CONFIG.whatsapp) || "5491154693079"; // +54 9 11 5469-3079
   const STORE = "Lemates · Tienda Matera";
   // Base para links absolutos (WhatsApp/SEO). En file:// origin es "null": usamos un fallback.
   const SITE = (location.origin && location.origin.startsWith("http"))

@@ -71,11 +71,30 @@ Para reprocesar imágenes y datos desde `Catalogo/` (requiere ImageMagick):
 python scripts/build_catalog.py
 ```
 
+## Cobro y envíos (IMPORTANTE — configurar)
+
+### 1. Datos de cobro — `assets/js/config.js`
+Editá `assets/js/config.js` y reemplazá los valores marcados con `REEMPLAZAR`:
+- **Mercado Pago:** `alias`, `cvu`, `titular`. Subí tu QR real en `assets/img/pago/qr-mercadopago.png` (reemplazá el placeholder).
+- **Transferencia:** `banco`, `cbu`, `alias`, `titular`.
+
+En el checkout, el cliente elige el método, ve el QR / CVU / CBU y el total exacto, paga, y envía el **comprobante por WhatsApp** con un botón (el pedido queda pre-armado en el mensaje; el cliente adjunta la captura en el chat).
+
+### 2. Envíos — API de Correo Argentino (MiCorreo)
+El checkout cotiza el envío **en vivo** con la función serverless `api/shipping.js`. Necesitás una cuenta de la API "MiCorreo/PaqAr" de Correo Argentino y cargar estas variables de entorno en Vercel (**Project → Settings → Environment Variables**), según `.env.example`:
+
+```
+CORREO_USER, CORREO_PASSWORD, CORREO_CUSTOMER_ID, CORREO_ORIGIN_CP, CORREO_ENV=prod
+```
+
+Mientras no estén cargadas (o si la API falla), el checkout usa automáticamente un **estimador por zona** definido en `config.js` (`envio.estimadorRespaldo`), y confirma el valor final por WhatsApp. Los pesos por categoría y las dimensiones de la caja también se configuran en `config.js`.
+
 ## Despliegue en Vercel
 
-1. Subir el repositorio a GitHub.
-2. Importar en Vercel como proyecto estático (sin framework, sin build command).
-3. **Antes de publicar**, reemplazar `https://www.lemates.com.ar` por el dominio real en:
+1. Subir el repositorio a GitHub (ya hecho).
+2. Importar en Vercel: **Framework Preset = Other**, sin build command. Vercel detecta automáticamente la carpeta `api/` como funciones serverless.
+3. Cargar las variables de entorno de Correo Argentino (ver arriba).
+4. **Antes de publicar**, reemplazar `https://www.lemates.com.ar` por el dominio real en:
    `scripts/build_site.py` (constante `BASE`), `robots.txt`, `sitemap.xml`, y luego regenerar.
 
 ## Datos de la marca

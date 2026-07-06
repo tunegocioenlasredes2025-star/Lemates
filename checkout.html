@@ -92,8 +92,8 @@
           <h3><span class="num">2</span> Método de envío</h3>
           <p>Elegí cómo querés recibir tu pedido.</p>
           <div class="radio-cards">
-      <label class="radio-card selected" data-ship="domicilio"><input type="radio" name="shipping" value="domicilio" checked><span><b>Envío a domicilio</b><span>Correo Argentino · 3-6 días hábiles</span></span><span class="r-price">$4.500</span></label>
-      <label class="radio-card" data-ship="sucursal"><input type="radio" name="shipping" value="sucursal"><span><b>Envío a sucursal</b><span>Retirás en la sucursal de Correo más cercana</span></span><span class="r-price">$3.200</span></label>
+      <label class="radio-card selected" data-ship="domicilio"><input type="radio" name="shipping" value="domicilio" checked><span><b>Envío a domicilio</b><span>Correo Argentino · 2-6 días hábiles</span></span><span class="r-price"><span style="color:var(--muted);font-weight:500">según CP</span></span></label>
+      <label class="radio-card" data-ship="sucursal"><input type="radio" name="shipping" value="sucursal"><span><b>Envío a sucursal</b><span>Retirás en la sucursal de Correo más cercana</span></span><span class="r-price"><span style="color:var(--muted);font-weight:500">según CP</span></span></label>
       <label class="radio-card" data-ship="retiro"><input type="radio" name="shipping" value="retiro"><span><b>Retiro en zona oeste (GBA)</b><span>Coordinamos punto y horario por WhatsApp</span></span><span class="r-price">Gratis</span></label></div>
         </div>
         <div class="form-card" id="addressSection">
@@ -109,18 +109,17 @@
         </div>
         <div class="form-card">
           <h3><span class="num">4</span> Método de pago</h3>
-          <p>Coordinamos el pago al confirmar el pedido.</p>
+          <p>Elegí cómo pagar. En el siguiente paso te mostramos los datos.</p>
           <div class="radio-cards">
-      <label class="radio-card selected" data-pay="transferencia"><input type="radio" name="payment" value="transferencia" checked><span><b>Transferencia bancaria</b><span>Te enviamos los datos al confirmar</span></span></label>
-      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Para retiros en zona oeste</span></span></label>
-      <label class="radio-card" data-pay="tarjeta"><input type="radio" name="payment" value="tarjeta"><span><b>Tarjeta</b><span>Coordinamos el link de pago</span></span></label>
-      <label class="radio-card" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago"><span><b>Mercado Pago</b><span>Próximamente disponible</span></span></label></div>
+      <label class="radio-card selected" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago" checked><span><b>Mercado Pago</b><span>Escaneá el QR o transferí al CVU. Enviás el comprobante.</span></span></label>
+      <label class="radio-card" data-pay="transferencia"><input type="radio" name="payment" value="transferencia"><span><b>Transferencia bancaria</b><span>CBU / alias. Enviás el comprobante por WhatsApp.</span></span></label>
+      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Pagás al retirar en zona oeste (GBA).</span></span></label></div>
         </div>
       </div>
       <aside class="summary" id="orderSummary"></aside>
       <div style="grid-column:1/-1;margin-top:4px">
-        <button class="btn btn--primary btn--lg btn--block" type="submit" form="checkoutForm"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 15 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8zm4.5-6.6c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.5-.8-2.5-1.4-3.5-3.1-.3-.5.3-.4.8-1.4.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg> Confirmar pedido por WhatsApp</button>
-        <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:12px">Al confirmar coordinamos el pago y el envío de forma personalizada.</p>
+        <button class="btn btn--primary btn--lg btn--block" id="confirmBtn" type="submit" form="checkoutForm">Continuar al pago <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 5l7 7-7 7"/></svg></button>
+        <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:12px">Pagás con Mercado Pago o transferencia y nos enviás el comprobante por WhatsApp. Coordinamos el envío al recibirlo.</p>
       </div>
     </form>
   </div>
@@ -164,8 +163,10 @@
 </footer>
 <a class="wa-float" href="https://wa.me/5491154693079" target="_blank" rel="noopener" aria-label="Escribinos por WhatsApp"><svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2zm0 18c-1.5 0-3-.4-4.2-1.2l-.3-.2-3.1.8.8-3-.2-.3C4.4 15 4 13.5 4 12c0-4.4 3.6-8 8-8s8 3.6 8 8-3.6 8-8 8zm4.5-6.6c-.3-.1-1.7-.8-1.9-.9-.3-.1-.5-.1-.7.1-.2.3-.7.9-.9 1.1-.2.2-.3.2-.6.1-1.5-.8-2.5-1.4-3.5-3.1-.3-.5.3-.4.8-1.4.1-.2 0-.4 0-.5s-.7-1.6-.9-2.2c-.2-.5-.5-.5-.7-.5h-.6c-.2 0-.5.1-.8.4-.3.3-1 1-1 2.5s1.1 2.9 1.2 3.1c.1.2 2.1 3.3 5.2 4.6 1.9.8 2.7.9 3.6.8.6-.1 1.7-.7 1.9-1.4.2-.7.2-1.2.2-1.4-.1-.1-.3-.2-.6-.3z"/></svg></a>
 <button class="to-top" aria-label="Volver arriba"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="m18 15-6-6-6 6"/></svg></button>
+<script src="assets/js/config.js"></script>
 <script src="assets/js/products.js"></script>
 <script src="assets/js/app.js"></script>
+<script src="assets/js/shipping.js"></script>
 <script src="assets/js/checkout.js"></script>
 </body>
 </html>

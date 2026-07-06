@@ -531,6 +531,33 @@ h3 { font-size: clamp(1.3rem, 2.5vw, 1.7rem); }
 .loader-mate { width: 54px; height: 54px; animation: bob 1.4s var(--ease) infinite; }
 @keyframes bob { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-10px); } }
 
+/* ---------- Modal de pago ---------- */
+.pay-modal { position: fixed; inset: 0; z-index: 220; visibility: hidden; }
+.pay-modal__scrim { position: absolute; inset: 0; background: rgba(43,29,20,.5); opacity: 0; transition: opacity .3s; backdrop-filter: blur(3px); }
+.pay-modal__panel { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -46%); width: min(94vw, 460px); max-height: 92vh; overflow-y: auto; background: var(--cream); border-radius: var(--r-lg); box-shadow: var(--sh-lg); padding: clamp(22px, 4vw, 32px); opacity: 0; transition: opacity .35s var(--ease-out), transform .35s var(--ease-out); }
+.pay-modal.open { visibility: visible; }
+.pay-modal.open .pay-modal__scrim { opacity: 1; }
+.pay-modal.open .pay-modal__panel { opacity: 1; transform: translate(-50%, -50%); }
+.pay-modal__x { position: absolute; top: 12px; right: 12px; }
+.pay-modal h3 { font-size: 1.6rem; margin: 8px 0 18px; }
+.pay-amount { display: flex; justify-content: space-between; align-items: center; background: var(--secondary); border-radius: var(--r-md); padding: 14px 18px; margin-bottom: 18px; }
+.pay-amount span { font-size: .88rem; color: var(--ink-soft); }
+.pay-amount b { font-family: var(--font-display); font-size: 1.5rem; color: var(--accent); }
+.pay-qr { display: flex; justify-content: center; margin: 6px 0 16px; }
+.pay-qr img { width: 210px; height: 210px; object-fit: contain; border-radius: var(--r-md); border: 1px solid var(--line); background: #fff; padding: 8px; }
+.pay-qr__ph { width: 210px; height: 210px; border: 2px dashed var(--line-strong); border-radius: var(--r-md); align-items: center; justify-content: center; text-align: center; color: var(--muted); font-size: .82rem; padding: 16px; }
+.pay-qr__ph code { font-size: .72rem; color: var(--accent); word-break: break-all; }
+.pay-hint { font-size: .9rem; color: var(--ink-soft); margin-bottom: 14px; }
+.pay-data { display: grid; gap: 10px; margin-bottom: 6px; }
+.pay-data > div { display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+.pay-data > div > span:first-child { font-size: .82rem; color: var(--muted); font-weight: 600; flex-shrink: 0; }
+.pay-static { font-size: .9rem; font-weight: 600; text-align: right; }
+.copy-chip { display: inline-flex; align-items: center; gap: 8px; max-width: 68%; padding: 8px 12px; border-radius: var(--r-sm); border: 1.5px solid var(--line-strong); background: var(--paper); font-size: .9rem; font-weight: 600; color: var(--ink); transition: border-color .2s, background .2s; }
+.copy-chip:hover { border-color: var(--accent); background: var(--cream-2); }
+.copy-chip span { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.copy-chip svg { width: 16px; height: 16px; color: var(--accent); flex-shrink: 0; }
+.pay-note { font-size: .84rem; color: var(--ink-soft); line-height: 1.55; background: rgba(211,143,68,.1); border-radius: var(--r-sm); padding: 12px 14px; margin: 16px 0; }
+
 /* ============================================================
    RESPONSIVE
    ============================================================ */

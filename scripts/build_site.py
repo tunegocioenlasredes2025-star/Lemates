@@ -196,9 +196,13 @@ def overlays():
 <button class="to-top" aria-label="Volver arriba">{I['up']}</button>'''
 
 def scripts(extra=""):
-    s = '<script src="/assets/js/products.js"></script>\n<script src="/assets/js/app.js"></script>'
-    if extra:
-        s += f'\n<script src="/assets/js/{extra}"></script>'
+    # config.js primero (datos de cobro/envío), luego datos, núcleo y scripts de página
+    s = ('<script src="/assets/js/config.js"></script>\n'
+         '<script src="/assets/js/products.js"></script>\n'
+         '<script src="/assets/js/app.js"></script>')
+    extras = extra if isinstance(extra, (list, tuple)) else ([extra] if extra else [])
+    for e in extras:
+        s += f'\n<script src="/assets/js/{e}"></script>'
     return s + "\n</body>\n</html>"
 
 def page(active):

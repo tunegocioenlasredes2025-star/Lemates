@@ -334,7 +334,7 @@ document.addEventListener('DOMContentLoaded',function(){{
     faqs = [
         ("¿Hacen envíos a todo el país?","Sí. Despachamos a toda la Argentina a través de Correo Argentino (a domicilio o a sucursal). También podés coordinar el retiro sin cargo en la zona oeste del Gran Buenos Aires."),
         ("¿Cuánto tarda el envío?","Una vez confirmado el pago, despachamos dentro de las 24-48 hs hábiles. El tiempo de entrega de Correo Argentino suele ser de 3 a 6 días hábiles según la localidad."),
-        ("¿Qué medios de pago aceptan?","Aceptamos transferencia bancaria, efectivo (para retiros) y tarjeta. Estamos sumando Mercado Pago próximamente. Coordinamos el medio que te resulte más cómodo por WhatsApp."),
+        ("¿Qué medios de pago aceptan?","Pagás con Mercado Pago (escaneando el QR o transfiriendo al CVU), con transferencia bancaria (CBU/alias), o en efectivo si retirás en zona oeste. Al confirmar el pedido te mostramos los datos y el total exacto; después nos enviás el comprobante por WhatsApp."),
         ("¿Puedo comprar directamente por WhatsApp?","¡Claro! Podés armar tu carrito en la web y enviarlo por WhatsApp con un clic, o escribirnos directamente para que te asesoremos y coordinemos todo."),
         ("¿Los mates vienen curados?","Los mates de calabaza requieren un curado inicial. Te enviamos las indicaciones y estamos para ayudarte por WhatsApp en todo el proceso para que tu mate dure muchos años."),
         ("¿Los productos son artesanales?","Sí. Seleccionamos piezas artesanales con materiales nobles como calabaza, algarrobo, alpaca, bronce y cuero. Por su naturaleza, cada pieza puede tener pequeñas variaciones que la hacen única."),
@@ -459,14 +459,13 @@ document.querySelectorAll('#contactForm [required]').forEach(function(f){{f.addE
     provincias = ["Buenos Aires","CABA","Catamarca","Chaco","Chubut","Córdoba","Corrientes","Entre Ríos","Formosa","Jujuy","La Pampa","La Rioja","Mendoza","Misiones","Neuquén","Río Negro","Salta","San Juan","San Luis","Santa Cruz","Santa Fe","Santiago del Estero","Tierra del Fuego","Tucumán"]
     prov_opts = '<option value="" disabled selected>Elegí tu provincia</option>' + "".join(f'<option>{p}</option>' for p in provincias)
     ship_cards = f'''
-      <label class="radio-card selected" data-ship="domicilio"><input type="radio" name="shipping" value="domicilio" checked><span><b>Envío a domicilio</b><span>Correo Argentino · 3-6 días hábiles</span></span><span class="r-price">$4.500</span></label>
-      <label class="radio-card" data-ship="sucursal"><input type="radio" name="shipping" value="sucursal"><span><b>Envío a sucursal</b><span>Retirás en la sucursal de Correo más cercana</span></span><span class="r-price">$3.200</span></label>
+      <label class="radio-card selected" data-ship="domicilio"><input type="radio" name="shipping" value="domicilio" checked><span><b>Envío a domicilio</b><span>Correo Argentino · 2-6 días hábiles</span></span><span class="r-price"><span style="color:var(--muted);font-weight:500">según CP</span></span></label>
+      <label class="radio-card" data-ship="sucursal"><input type="radio" name="shipping" value="sucursal"><span><b>Envío a sucursal</b><span>Retirás en la sucursal de Correo más cercana</span></span><span class="r-price"><span style="color:var(--muted);font-weight:500">según CP</span></span></label>
       <label class="radio-card" data-ship="retiro"><input type="radio" name="shipping" value="retiro"><span><b>Retiro en zona oeste (GBA)</b><span>Coordinamos punto y horario por WhatsApp</span></span><span class="r-price">Gratis</span></label>'''
     pay_cards = f'''
-      <label class="radio-card selected" data-pay="transferencia"><input type="radio" name="payment" value="transferencia" checked><span><b>Transferencia bancaria</b><span>Te enviamos los datos al confirmar</span></span></label>
-      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Para retiros en zona oeste</span></span></label>
-      <label class="radio-card" data-pay="tarjeta"><input type="radio" name="payment" value="tarjeta"><span><b>Tarjeta</b><span>Coordinamos el link de pago</span></span></label>
-      <label class="radio-card" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago"><span><b>Mercado Pago</b><span>Próximamente disponible</span></span></label>'''
+      <label class="radio-card selected" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago" checked><span><b>Mercado Pago</b><span>Escaneá el QR o transferí al CVU. Enviás el comprobante.</span></span></label>
+      <label class="radio-card" data-pay="transferencia"><input type="radio" name="payment" value="transferencia"><span><b>Transferencia bancaria</b><span>CBU / alias. Enviás el comprobante por WhatsApp.</span></span></label>
+      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Pagás al retirar en zona oeste (GBA).</span></span></label>'''
     body = f'''{page("catalogo.html")}
 {breadcrumb([("Inicio","/index.html"),("Carrito","/carrito.html"),("Checkout",None)])}
 <section class="page-hero" style="padding-block:clamp(24px,4vw,40px)"><div class="container">
@@ -512,21 +511,21 @@ document.querySelectorAll('#contactForm [required]').forEach(function(f){{f.addE
         </div>
         <div class="form-card">
           <h3><span class="num">4</span> Método de pago</h3>
-          <p>Coordinamos el pago al confirmar el pedido.</p>
+          <p>Elegí cómo pagar. En el siguiente paso te mostramos los datos.</p>
           <div class="radio-cards">{pay_cards}</div>
         </div>
       </div>
       <aside class="summary" id="orderSummary"></aside>
       <div style="grid-column:1/-1;margin-top:4px">
-        <button class="btn btn--primary btn--lg btn--block" type="submit" form="checkoutForm">{I['wa']} Confirmar pedido por WhatsApp</button>
-        <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:12px">Al confirmar coordinamos el pago y el envío de forma personalizada.</p>
+        <button class="btn btn--primary btn--lg btn--block" id="confirmBtn" type="submit" form="checkoutForm">Continuar al pago {I['arrow']}</button>
+        <p style="text-align:center;font-size:.82rem;color:var(--muted);margin-top:12px">Pagás con Mercado Pago o transferencia y nos enviás el comprobante por WhatsApp. Coordinamos el envío al recibirlo.</p>
       </div>
     </form>
   </div>
 </main>
 {footer()}
 {overlays()}
-{scripts("checkout.js")}'''
+{scripts(["shipping.js", "checkout.js"])}'''
     write("checkout.html", head(
         "Checkout | Lemates · Tienda Matera",
         "Finalizá tu compra en Lemates. Elegí envío y medio de pago, y confirmá tu pedido por WhatsApp de forma simple y segura.",
@@ -546,19 +545,19 @@ document.querySelectorAll('#contactForm [required]').forEach(function(f){{f.addE
     <h2 id="envios">Política de envíos</h2>
     <p>Realizamos envíos a todo el territorio de la República Argentina a través de Correo Argentino, en sus modalidades a domicilio y a sucursal. También ofrecemos retiro sin cargo coordinando punto y horario en la zona oeste del Gran Buenos Aires.</p>
     <ul>
-      <li>Los pedidos se despachan dentro de las 24 a 48 horas hábiles posteriores a la confirmación del pago.</li>
-      <li>Los plazos de entrega estimados son de 3 a 6 días hábiles según la localidad de destino.</li>
-      <li>El costo de envío se calcula en el checkout según la modalidad elegida y puede ajustarse según destino.</li>
+      <li>Los pedidos se despachan dentro de las 24 a 48 horas hábiles posteriores a la acreditación del pago.</li>
+      <li>Los plazos de entrega estimados son de 2 a 6 días hábiles según la localidad de destino.</li>
+      <li>El costo de envío se calcula automáticamente en el checkout según tu código postal, la modalidad elegida (domicilio o sucursal) y el peso del pedido.</li>
       <li>Una vez despachado, te compartimos el número de seguimiento por WhatsApp.</li>
     </ul>
     <h2 id="pagos">Medios de pago</h2>
-    <p>Aceptamos los siguientes medios de pago, que coordinamos de forma personalizada al confirmar tu pedido:</p>
+    <p>Podés pagar de forma simple y segura con cualquiera de estas opciones:</p>
     <ul>
-      <li><b>Transferencia bancaria:</b> te enviamos los datos de la cuenta al confirmar.</li>
-      <li><b>Efectivo:</b> disponible para retiros en zona oeste del GBA.</li>
-      <li><b>Tarjeta:</b> coordinamos un link de pago seguro.</li>
-      <li><b>Mercado Pago:</b> próximamente disponible como opción integrada.</li>
+      <li><b>Mercado Pago:</b> escaneás el QR desde la app o transferís al CVU/alias, y nos enviás el comprobante por WhatsApp.</li>
+      <li><b>Transferencia bancaria:</b> transferís al CBU/alias que se muestra en el checkout y nos enviás el comprobante por WhatsApp.</li>
+      <li><b>Efectivo:</b> disponible para retiros en zona oeste del GBA; pagás al retirar.</li>
     </ul>
+    <p>En todos los casos, al confirmar el pedido te mostramos los datos de pago y el total exacto. Coordinamos el envío apenas recibimos tu comprobante.</p>
     <h2 id="cambios">Cambios y devoluciones</h2>
     <p>Tu satisfacción es nuestra prioridad. Podés solicitar el cambio o la devolución de un producto dentro de los 10 días corridos desde su recepción, conforme a la normativa de defensa del consumidor.</p>
     <h3>Condiciones</h3>
