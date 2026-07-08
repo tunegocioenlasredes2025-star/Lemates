@@ -4,6 +4,7 @@ import os, json, html
 
 ROOT = r"C:/TNR/Lemates"
 BASE = "https://www.lemates.com.ar"   # <-- Cambiar por el dominio real al desplegar
+ASSET_VER = "20260708"                # Bump al cambiar CSS/JS para invalidar caché del navegador
 WA = "5491154693079"
 IG = "https://www.instagram.com/lemates1/"
 DATA = json.load(open(os.path.join(ROOT, "assets/js/products-data.json"), encoding="utf-8"))
@@ -105,7 +106,7 @@ def head(title, desc, path, og_type="website", extra_ld=None):
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Marcellus&family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap">
-<link rel="stylesheet" href="/assets/css/styles.css">
+<link rel="stylesheet" href="/assets/css/styles.css?v={ASSET_VER}">
 {ld_blocks}
 </head>
 <body>
@@ -197,12 +198,13 @@ def overlays():
 
 def scripts(extra=""):
     # config.js primero (datos de cobro/envío), luego datos, núcleo y scripts de página
-    s = ('<script src="/assets/js/config.js"></script>\n'
-         '<script src="/assets/js/products.js"></script>\n'
-         '<script src="/assets/js/app.js"></script>')
+    v = f"?v={ASSET_VER}"
+    s = (f'<script src="/assets/js/config.js{v}"></script>\n'
+         f'<script src="/assets/js/products.js{v}"></script>\n'
+         f'<script src="/assets/js/app.js{v}"></script>')
     extras = extra if isinstance(extra, (list, tuple)) else ([extra] if extra else [])
     for e in extras:
-        s += f'\n<script src="/assets/js/{e}"></script>'
+        s += f'\n<script src="/assets/js/{e}{v}"></script>'
     return s + "\n</body>\n</html>"
 
 def page(active):

@@ -70,7 +70,7 @@ def description(name, cat):
 MATERAS_DIR = os.path.join(ROOT, "Materas")
 MATERAS = [
     {"id": "matera-de-cuero", "name": "Matera de Cuero", "price": 37000,
-     "materials": ["cuero genuino"],
+     "materials": ["cuero genuino"], "imgbase": "matera-cuero",
      "files": ["Matera de Cuero.jfif", "Matera de cuero negra.jfif",
                "Matera de Cuero Bordo.jfif", "matera de cuero 2.jfif"]},
     {"id": "matera-de-cuerina", "name": "Matera de Cuerina", "price": 16000,
@@ -83,12 +83,13 @@ def build_materas():
     out = []
     for p in MATERAS:
         imgs = []
+        base = p.get("imgbase", p["id"])
         for i, f in enumerate(p["files"]):
             src = os.path.join(MATERAS_DIR, f)
             if not os.path.isfile(src):
                 continue
             suf = "" if i == 0 else f"-{i+1}"
-            main_f = f'{p["id"]}{suf}.webp'; thumb_f = f'{p["id"]}{suf}-thumb.webp'
+            main_f = f'{base}{suf}.webp'; thumb_f = f'{base}{suf}-thumb.webp'
             subprocess.run(f'magick "{src}" -auto-orient -resize "1000x1000>" -strip -quality 82 "{OUT}/{main_f}"', shell=True, check=True)
             subprocess.run(f'magick "{src}" -auto-orient -resize "600x600>" -strip -quality 80 "{OUT}/{thumb_f}"', shell=True, check=True)
             imgs.append({"src": f"assets/img/products/{main_f}", "thumb": f"assets/img/products/{thumb_f}"})
