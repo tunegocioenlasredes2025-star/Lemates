@@ -228,13 +228,16 @@
     const totalTxt = t.pending ? fmt(t.sub) + " + envío" : fmt(t.total);
     if (payment === "mercadopago") {
       const mp = PAGO.mercadopago || {};
+      const qrBlock = mp.qr
+        ? `<div class="pay-qr"><img src="${esc(mp.qr)}" alt="QR de Mercado Pago" onerror="this.closest('.pay-qr').style.display='none'"></div>`
+        : "";
+      const hint = mp.qr
+        ? "Escaneá el QR o transferí al CVU/alias (también podés pagar con <b>tarjeta</b> desde Mercado Pago):"
+        : "Transferí al CVU/alias, o pagá con <b>tarjeta</b> desde Mercado Pago:";
       return `
         <div class="pay-amount"><span>Total a pagar</span><b>${totalTxt}</b></div>
-        <div class="pay-qr">
-          <img src="${esc(mp.qr || "")}" alt="QR de Mercado Pago" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-          <div class="pay-qr__ph" style="display:none">Subí tu QR en<br><code>${esc(mp.qr || "assets/img/pago/qr-mercadopago.png")}</code></div>
-        </div>
-        <p class="pay-hint">Escaneá el QR o transferí al CVU/alias (también podés pagar con <b>tarjeta</b> desde Mercado Pago):</p>
+        ${qrBlock}
+        <p class="pay-hint">${hint}</p>
         <div class="pay-data">
           <div><span>Alias</span>${copyBtn(mp.alias || "", "alias")}</div>
           <div><span>CVU</span>${copyBtn(mp.cvu || "", "CVU")}</div>

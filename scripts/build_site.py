@@ -4,7 +4,7 @@ import os, json, html
 
 ROOT = r"C:/TNR/Lemates"
 BASE = "https://www.lemates.com.ar"   # <-- Cambiar por el dominio real al desplegar
-ASSET_VER = "20260708b"               # Bump al cambiar CSS/JS para invalidar caché del navegador
+ASSET_VER = "20260708c"               # Bump al cambiar CSS/JS para invalidar caché del navegador
 WA = "5491154693079"
 IG = "https://www.instagram.com/lemates1/"
 DATA = json.load(open(os.path.join(ROOT, "assets/js/products-data.json"), encoding="utf-8"))
