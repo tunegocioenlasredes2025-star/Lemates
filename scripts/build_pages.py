@@ -463,9 +463,9 @@ document.querySelectorAll('#contactForm [required]').forEach(function(f){{f.addE
       <label class="radio-card" data-ship="sucursal"><input type="radio" name="shipping" value="sucursal"><span><b>Envío a sucursal</b><span>Retirás en la sucursal de Correo más cercana</span></span><span class="r-price"><span style="color:var(--muted);font-weight:500">según CP</span></span></label>
       <label class="radio-card" data-ship="retiro"><input type="radio" name="shipping" value="retiro"><span><b>Retiro en zona oeste (GBA)</b><span>Coordinamos punto y horario por WhatsApp</span></span><span class="r-price">Gratis</span></label>'''
     pay_cards = f'''
-      <label class="radio-card selected" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago" checked><span><b>Mercado Pago</b><span>Escaneá el QR o transferí al CVU. Enviás el comprobante.</span></span></label>
+      <label class="radio-card selected" data-pay="mercadopago"><input type="radio" name="payment" value="mercadopago" checked><span><b>Mercado Pago</b><span>QR, CVU o tarjeta. Enviás el comprobante por WhatsApp.</span></span></label>
       <label class="radio-card" data-pay="transferencia"><input type="radio" name="payment" value="transferencia"><span><b>Transferencia bancaria</b><span>CBU / alias. Enviás el comprobante por WhatsApp.</span></span></label>
-      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Pagás al retirar en zona oeste (GBA).</span></span></label>'''
+      <label class="radio-card" data-pay="efectivo"><input type="radio" name="payment" value="efectivo"><span><b>Efectivo</b><span>Pagás en efectivo al recibir o retirar. Sin comprobante.</span></span></label>'''
     body = f'''{page("catalogo.html")}
 {breadcrumb([("Inicio","/index.html"),("Carrito","/carrito.html"),("Checkout",None)])}
 <section class="page-hero" style="padding-block:clamp(24px,4vw,40px)"><div class="container">

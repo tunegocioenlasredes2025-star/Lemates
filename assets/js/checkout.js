@@ -188,9 +188,9 @@
     retiro: "Retiro en zona oeste (GBA)",
   };
   const PAY_LABELS = {
-    mercadopago: "Mercado Pago (QR / CVU)",
+    mercadopago: "Mercado Pago (QR, CVU o tarjeta)",
     transferencia: "Transferencia bancaria",
-    efectivo: "Efectivo (al retirar)",
+    efectivo: "EFECTIVO — abona al recibir/retirar",
   };
   function buildMessage(d, withComprobante) {
     const t = totals();
@@ -234,7 +234,7 @@
           <img src="${esc(mp.qr || "")}" alt="QR de Mercado Pago" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
           <div class="pay-qr__ph" style="display:none">Subí tu QR en<br><code>${esc(mp.qr || "assets/img/pago/qr-mercadopago.png")}</code></div>
         </div>
-        <p class="pay-hint">Escaneá el QR con la app de Mercado Pago, o transferí al CVU/alias:</p>
+        <p class="pay-hint">Escaneá el QR o transferí al CVU/alias (también podés pagar con <b>tarjeta</b> desde Mercado Pago):</p>
         <div class="pay-data">
           <div><span>Alias</span>${copyBtn(mp.alias || "", "alias")}</div>
           <div><span>CVU</span>${copyBtn(mp.cvu || "", "CVU")}</div>
@@ -301,12 +301,12 @@
     modal.querySelector("#payBody").innerHTML = payBlock();
     const withComp = payment !== "efectivo";
     modal.querySelector("#payNote").innerHTML = withComp
-      ? "Cuando hagas el pago, tocá el botón y <b>adjuntá la captura del comprobante</b> en el chat de WhatsApp. Coordinamos el envío al recibirlo."
-      : "Tocá el botón para coordinar el retiro y el pago en efectivo por WhatsApp.";
+      ? "Cuando hagas el pago, tocá el botón: se abre WhatsApp con <b>el detalle de tu pedido</b> ya escrito. Ahí <b>adjuntá la captura del comprobante</b> y coordinamos el envío."
+      : "Vas a pagar <b>en efectivo</b> al recibir o retirar. Tocá el botón para enviarnos <b>el pedido por WhatsApp</b> y coordinar la entrega.";
     const send = modal.querySelector("#paySend");
     send.innerHTML =
       '<svg viewBox="0 0 24 24" fill="currentColor" style="width:1.2em;height:1.2em"><path d="M12 2C6.5 2 2 6.5 2 12c0 1.8.5 3.4 1.3 4.9L2 22l5.3-1.4c1.4.8 3 1.2 4.7 1.2 5.5 0 10-4.5 10-10S17.5 2 12 2z"/></svg>' +
-      (withComp ? "Enviar comprobante por WhatsApp" : "Coordinar por WhatsApp");
+      (withComp ? "Enviar pedido + comprobante" : "Enviar pedido por WhatsApp");
     send.href = window.LemWA.link(buildMessage(d, withComp));
     modal.classList.add("open");
     document.body.style.overflow = "hidden";
