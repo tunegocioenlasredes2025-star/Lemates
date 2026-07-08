@@ -231,16 +231,17 @@
       const qrBlock = mp.qr
         ? `<div class="pay-qr"><img src="${esc(mp.qr)}" alt="QR de Mercado Pago" onerror="this.closest('.pay-qr').style.display='none'"></div>`
         : "";
+      const dest = mp.cvu ? "CVU/alias" : "alias";
       const hint = mp.qr
-        ? "Escaneá el QR o transferí al CVU/alias (también podés pagar con <b>tarjeta</b> desde Mercado Pago):"
-        : "Transferí al CVU/alias, o pagá con <b>tarjeta</b> desde Mercado Pago:";
+        ? `Escaneá el QR o transferí al ${dest} (también podés pagar con <b>tarjeta</b> desde Mercado Pago):`
+        : `Transferí al ${dest}, o pagá con <b>tarjeta</b> desde Mercado Pago:`;
       return `
         <div class="pay-amount"><span>Total a pagar</span><b>${totalTxt}</b></div>
         ${qrBlock}
         <p class="pay-hint">${hint}</p>
         <div class="pay-data">
-          <div><span>Alias</span>${copyBtn(mp.alias || "", "alias")}</div>
-          <div><span>CVU</span>${copyBtn(mp.cvu || "", "CVU")}</div>
+          ${mp.alias ? `<div><span>Alias</span>${copyBtn(mp.alias, "alias")}</div>` : ""}
+          ${mp.cvu ? `<div><span>CVU</span>${copyBtn(mp.cvu, "CVU")}</div>` : ""}
           ${mp.titular ? `<div><span>Titular</span><span class="pay-static">${esc(mp.titular)}</span></div>` : ""}
         </div>
         ${
