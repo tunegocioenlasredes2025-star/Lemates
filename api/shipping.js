@@ -51,8 +51,13 @@ module.exports = async (req, res) => {
   if (typeof body === "string") { try { body = JSON.parse(body); } catch { body = {}; } }
   body = body || {};
 
-  const postalCodeDestination = String(body.postalCodeDestination || body.cp || "").trim();
-  const origin = String(body.postalCodeOrigin || CORREO_ORIGIN_CP || "").trim();
+  // Normaliza cualquier CP argentino al código de 4 dígitos (ej: "B1714FZL" -> "1714")
+  const cp4 = (v) => {
+    const m = String(v || "").match(/\d{4}/);
+    return m ? m[0] : String(v || "").trim();
+  };
+  const postalCodeDestination = cp4(body.postalCodeDestination || body.cp || "");
+  const origin = cp4(body.postalCodeOrigin || CORREO_ORIGIN_CP || "");
   const weight = Math.max(1, Math.min(25000, parseInt(body.weight, 10) || 1000)); // gramos
   const height = Math.max(1, Math.min(150, parseInt(body.height, 10) || 15));
   const width = Math.max(1, Math.min(150, parseInt(body.width, 10) || 20));
