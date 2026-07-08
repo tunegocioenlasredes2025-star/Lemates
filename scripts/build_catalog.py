@@ -67,6 +67,45 @@ def description(name, cat):
     return base + matstr
 
 
+MATERAS_DIR = os.path.join(ROOT, "Materas")
+MATERAS = [
+    {"id": "matera-de-cuero", "name": "Matera de Cuero", "price": 37000,
+     "materials": ["cuero genuino"],
+     "files": ["Matera de Cuero.jfif", "Matera de cuero negra.jfif",
+               "Matera de Cuero Bordo.jfif", "matera de cuero 2.jfif"]},
+    {"id": "matera-de-cuerina", "name": "Matera de Cuerina", "price": 16000,
+     "materials": ["cuerina premium"],
+     "files": ["matera de cuerina.jfif", "matera de cuerina 2.jfif"]},
+]
+
+def build_materas():
+    """Procesa la carpeta Materas/ (varias imágenes por producto, deslizables)."""
+    out = []
+    for p in MATERAS:
+        imgs = []
+        for i, f in enumerate(p["files"]):
+            src = os.path.join(MATERAS_DIR, f)
+            if not os.path.isfile(src):
+                continue
+            suf = "" if i == 0 else f"-{i+1}"
+            main_f = f'{p["id"]}{suf}.webp'; thumb_f = f'{p["id"]}{suf}-thumb.webp'
+            subprocess.run(f'magick "{src}" -auto-orient -resize "1000x1000>" -strip -quality 82 "{OUT}/{main_f}"', shell=True, check=True)
+            subprocess.run(f'magick "{src}" -auto-orient -resize "600x600>" -strip -quality 80 "{OUT}/{thumb_f}"', shell=True, check=True)
+            imgs.append({"src": f"assets/img/products/{main_f}", "thumb": f"assets/img/products/{thumb_f}"})
+        out.append({
+            "id": p["id"], "name": p["name"], "price": p["price"], "category": "Materas",
+            "images": imgs,
+            "description": f'{p["name"]}. Matera resistente y elegante para llevar tu equipo a todos lados, '
+                           f'con espacio para mate, termo y yerba. Ideal para la mateada al aire libre.',
+            "short": "En " + ", ".join(p["materials"]) + ".",
+            "materials": p["materials"], "stock": True,
+            "featured": p["id"] == "matera-de-cuero",
+            "bestseller": p["price"] in (16000, 22000, 23000, 30000, 32000),
+            "new": True,
+        })
+    return out
+
+
 def main():
     records = []
     for fn in sorted(os.listdir(SRC)):
@@ -130,6 +169,9 @@ def main():
             p['bestseller'] = True
     for p in products[-6:]:
         p['new'] = True
+
+    # Materas curadas (carpeta Materas/, sin precio en el nombre): reemplazan las de la categoría
+    products = [p for p in products if p['category'] != 'Materas'] + build_materas()
 
     json.dump(products, open(os.path.join(ROOT, "assets/js/products-data.json"), "w", encoding="utf-8"),
               ensure_ascii=False, indent=1)

@@ -60,9 +60,16 @@
 
   root.innerHTML = `
     <div class="gallery">
-      <div class="gallery__main" id="galMain">
+      <div class="gallery__main${p.images.length > 1 ? " has-nav" : ""}" id="galMain">
         ${tagsHTML ? `<div class="product-card__tags">${tagsHTML}</div>` : ""}
         <img src="${p.images[0].src}" alt="${esc(p.name)}" id="galImg" width="1000" height="1000">
+        ${
+          p.images.length > 1
+            ? `<button class="gallery__nav gallery__nav--prev" id="galPrev" aria-label="Imagen anterior"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m15 18-6-6 6-6"/></svg></button>
+        <button class="gallery__nav gallery__nav--next" id="galNext" aria-label="Imagen siguiente"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="m9 18 6-6-6-6"/></svg></button>
+        <div class="gallery__counter" id="galCounter">1 / ${p.images.length}</div>`
+            : ""
+        }
       </div>
       ${p.images.length > 1 ? `<div class="gallery__thumbs">${thumbs}</div>` : ""}
     </div>
@@ -103,27 +110,67 @@
       </ul>
     </div>`;
 
-  // ----- Galería -----
+  // ----- Galería (carrusel deslizable) -----
   const galImg = document.getElementById("galImg");
   const galMain = document.getElementById("galMain");
-  root.querySelectorAll(".gallery__thumb").forEach((btn) =>
-    btn.addEventListener("click", () => {
-      const i = +btn.dataset.i;
-      galImg.src = p.images[i].src;
-      root.querySelectorAll(".gallery__thumb").forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-      galMain.classList.remove("zoomed");
+  const thumbEls = root.querySelectorAll(".gallery__thumb");
+  const counter = document.getElementById("galCounter");
+  const total = p.images.length;
+  let gi = 0;
+
+  function goTo(i) {
+    gi = (i + total) % total;
+    galImg.src = p.images[gi].src;
+    thumbEls.forEach((b, idx) => b.classList.toggle("active", idx === gi));
+    if (counter) counter.textContent = `${gi + 1} / ${total}`;
+    galMain.classList.remove("zoomed");
+    galImg.style.transformOrigin = "center";
+  }
+
+  thumbEls.forEach((btn) =>
+    btn.addEventListener("click", (e) => {
+      e.stopPropagation();
+      goTo(+btn.dataset.i);
     })
   );
-  // zoom on click (desktop) with transform-origin follow
-  galMain.addEventListener("click", () => galMain.classList.toggle("zoomed"));
-  galMain.addEventListener("mousemove", (e) => {
-    if (!galMain.classList.contains("zoomed")) return;
-    const r = galMain.getBoundingClientRect();
-    galImg.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${
-      ((e.clientY - r.top) / r.height) * 100
-    }%`;
-  });
+  const prevBtn = document.getElementById("galPrev");
+  const nextBtn = document.getElementById("galNext");
+  if (prevBtn) prevBtn.addEventListener("click", (e) => { e.stopPropagation(); goTo(gi - 1); });
+  if (nextBtn) nextBtn.addEventListener("click", (e) => { e.stopPropagation(); goTo(gi + 1); });
+
+  // Deslizar con el dedo (touch) y con el teclado
+  if (total > 1) {
+    let sx = 0, sy = 0, moved = false;
+    galMain.addEventListener("touchstart", (e) => {
+      sx = e.changedTouches[0].clientX; sy = e.changedTouches[0].clientY; moved = false;
+    }, { passive: true });
+    galMain.addEventListener("touchmove", () => { moved = true; }, { passive: true });
+    galMain.addEventListener("touchend", (e) => {
+      const dx = e.changedTouches[0].clientX - sx;
+      const dy = e.changedTouches[0].clientY - sy;
+      if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) goTo(gi + (dx < 0 ? 1 : -1));
+    }, { passive: true });
+    document.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowLeft") goTo(gi - 1);
+      else if (e.key === "ArrowRight") goTo(gi + 1);
+    });
+  }
+
+  // Zoom al hacer click (solo en dispositivos con puntero / desktop)
+  const canHover = window.matchMedia("(hover: hover)").matches;
+  if (canHover) {
+    galMain.addEventListener("click", (e) => {
+      if (e.target.closest(".gallery__nav")) return;
+      galMain.classList.toggle("zoomed");
+    });
+    galMain.addEventListener("mousemove", (e) => {
+      if (!galMain.classList.contains("zoomed")) return;
+      const r = galMain.getBoundingClientRect();
+      galImg.style.transformOrigin = `${((e.clientX - r.left) / r.width) * 100}% ${
+        ((e.clientY - r.top) / r.height) * 100
+      }%`;
+    });
+  }
 
   // ----- Cantidad -----
   let qty = 1;
